@@ -3,3 +3,5 @@
 
 * TODO: Describe initial release 
 * First Release of QuickChange .
+## 1.0.1
+* Updated Readme

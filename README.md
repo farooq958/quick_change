@@ -10,7 +10,7 @@
 
 ---
 
-`quick_state` is designed to simplify state management in Flutter apps, making it suitable for both small and medium-scale applications, with the flexibility to extend for large apps. This package provides easy-to-use state controllers, built-in state types, and intuitive UI listening and building capabilities.
+`quick_change` is designed to simplify state management in Flutter apps, making it suitable for both small and medium-scale applications, with the flexibility to extend for large apps. This package provides easy-to-use state controllers, built-in state types, and intuitive UI listening and building capabilities.
 
 ## Features ✨
 

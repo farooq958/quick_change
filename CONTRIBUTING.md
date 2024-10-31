@@ -9,7 +9,7 @@ Thank you for considering contributing to **quick_state**! We appreciate your he
 
 2. **Clone the Repository**:
    ```bash
-   git clone https://github.com/farooq958/quick_state.git
+   git clone https://github.com/farooq958/quick_change.git
    ```
 
 3. **Create a Branch**: Work on your feature or bug fix in a new branch.
