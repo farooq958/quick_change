@@ -29,8 +29,7 @@ class CounterScreenState extends State<CounterScreen> {
 
   @override
   void initState() {
-
-    super.initState();
+  super.initState();
   }
   @override
   Widget build(BuildContext context) {

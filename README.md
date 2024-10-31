@@ -128,16 +128,13 @@ class _CounterScreenState extends State<CounterScreen> {
 
 ### Listening for Errors
 
-You can use `.quickListen` to display a `SnackBar` when an error occurs.
+You can use `.quickListen` to display a Custom message such as `SnackBar` when an error occurs.
 
 ```dart
-@override
-void initState() {
-  super.initState();
+
 
   // Listen for errors
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    counterController.quickListen(
+ Widget.quickListen(
       controller: counterController,
       listener: (state) {
         if (state is QuickError) {
@@ -147,7 +144,6 @@ void initState() {
         }
       },
     );
-  });
 }
 ```
 
@@ -201,4 +197,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ---
 
-Happy coding! 😊🎉 With `quick_state`, managing Flutter state transitions has never been simpler.
+Happy coding! 😊🎉 With `quick_state & Farooq `, managing Flutter state transitions has never been simpler.
