@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quick_state/quick_state.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -10,54 +10,74 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: CounterScreen(),
     );
   }
 }
 
 class CounterScreen extends StatefulWidget {
+  const CounterScreen({super.key});
+
   @override
-  _CounterScreenState createState() => _CounterScreenState();
+  CounterScreenState createState() => CounterScreenState();
 }
 
-class _CounterScreenState extends State<CounterScreen> {
+class CounterScreenState extends State<CounterScreen> {
   final QuickStateController<int> counterController = QuickStateController<int>();
 
+
+  @override
+  void initState() {
+
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Quick_State Example'),
+        title: const Text('Quick_State Example'),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          QuickStateBuilder<int>(
-            controller: counterController,
-            onLoading: (context) => CircularProgressIndicator(),
-            onData: (context, data) => Text('Counter: $data', style: TextStyle(fontSize: 24)),
-            onError: (context, message) => Text('Error: $message'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              counterController.setLoading();
-              Future.delayed(Duration(seconds: 1), () {
-                counterController.setData((counterController.state as QuickData<int>).data + 1);
-              });
-            },
-            child: Text('Increment Counter'),
-          ),
-        ],
-      ).quickListen<int>(
-        controller: counterController,
-        listener: (context, state) {
-          if (state is QuickError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
-          }
-        },
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            QuickStateBuilder<int>(
+              controller: counterController,
+              onLoading: (context) => const CircularProgressIndicator(),
+              onData: (context, data) => Text('Counter: $data', style: const TextStyle(fontSize: 24)),
+              onError: (context, message) => Text('Error: $message'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                final currentValue = counterController.getCurrentData() ?? 0;
+                counterController.setData(currentValue + 1);
+               ///test with loading
+                //counterController.setLoading();
+               //  Future.delayed(const Duration(seconds: 1), () {
+               //    final currentValue = counterController.getCurrentData() ?? 0;
+               //    counterController.setData(currentValue + 1);
+               //  });
+              },
+              child: const Text('Increment Counter'),
+            ),
+          ],
+        ).quickListen<int>(
+          controller: counterController,
+          listener: (context, state) {
+            if (state is QuickData) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Counter: ${state.data}')),
+              );
+            }
+            if (state is QuickError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.message)),
+              );
+            }
+          },
+        ),
       ),
     );
   }

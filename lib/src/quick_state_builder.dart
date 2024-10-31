@@ -7,6 +7,8 @@ import 'quick_state_controller.dart';
 /// Builder for QuickState widget to display loading, data, and error states.
 class QuickStateBuilder<T> extends StatelessWidget {
   final QuickStateController<T> controller;
+  final Widget Function(BuildContext context)? onInitial;
+
   final Widget Function(BuildContext context)? onLoading;
   final Widget Function(BuildContext context, T data)? onData;
   final Widget Function(BuildContext context, String message)? onError;
@@ -14,6 +16,7 @@ class QuickStateBuilder<T> extends StatelessWidget {
   const QuickStateBuilder({super.key,
     required this.controller,
     this.onLoading,
+    this.onInitial,
     this.onData,
     this.onError,
   });
@@ -23,6 +26,9 @@ class QuickStateBuilder<T> extends StatelessWidget {
     return ValueListenableBuilder<QuickState>(
       valueListenable: controller,
       builder: (context, state, child) {
+        if(state is QuickInitial) {
+          return onInitial?.call(context) ?? const SizedBox.shrink();
+        }
         if (state is QuickLoading) {
           return onLoading?.call(context) ?? const CircularProgressIndicator();
         } else if (state is QuickData<T>) {
