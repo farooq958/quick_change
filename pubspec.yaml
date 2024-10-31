@@ -1,5 +1,5 @@
-name: quick_state
-description: "A simple, lightweight quick state management package for Flutter."
+name: quick_change
+description: "A simple, lightweight quick state-management package for Flutter."
 version: 1.0.0
 homepage: https://github.com/farooq958/quick_state
 

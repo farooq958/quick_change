@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'quick_state_controller.dart';
-/// An extension to listen to state of [QuickStateController].
+/// An extension to listen to state of [QuickChangeController].
 ///
 /// This widget is mostly used with [StatefulWidget]s.
 ///
@@ -8,7 +8,7 @@ import 'quick_state_controller.dart';
 ///
 extension QuickStateListenerExtension on Widget {
   Widget quickListen<T>({
-    required QuickStateController<T> controller,
+    required QuickChangeController<T> controller,
     required void Function(BuildContext context, QuickState state) listener,
   }) {
     return QuickStateListenerWidget(
@@ -21,7 +21,7 @@ extension QuickStateListenerExtension on Widget {
 }
 class QuickStateListenerWidget<T> extends StatefulWidget {
   final Widget child;
-  final QuickStateController<T> controller;
+  final QuickChangeController<T> controller;
   final void Function(BuildContext context, QuickState state) listener;
 
   const QuickStateListenerWidget({

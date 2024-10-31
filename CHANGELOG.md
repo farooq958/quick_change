@@ -2,4 +2,4 @@
 ### Added
 
 * TODO: Describe initial release 
-* First Release of QuickState .
+* First Release of QuickChange .

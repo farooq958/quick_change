@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quick_state/quick_state.dart';
+import 'package:quick_change/quick_change.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,7 +24,7 @@ class CounterScreen extends StatefulWidget {
 }
 
 class CounterScreenState extends State<CounterScreen> {
-  final QuickStateController<int> counterController = QuickStateController<int>();
+  final QuickChangeController<int> counterController = QuickChangeController<int>();
 
 
   @override
@@ -42,7 +42,7 @@ class CounterScreenState extends State<CounterScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            QuickStateBuilder<int>(
+            QuickChangeBuilder<int>(
               controller: counterController,
               onLoading: (context) => const CircularProgressIndicator(),
               onData: (context, data) => Text('Counter: $data', style: const TextStyle(fontSize: 24)),

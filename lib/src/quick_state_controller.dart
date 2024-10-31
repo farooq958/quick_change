@@ -20,7 +20,7 @@ class QuickError<T> extends QuickState {
   QuickError(this.message, {this.previousData});
 }
 
-class QuickStateController<T> extends ChangeNotifier implements ValueListenable<QuickState> {
+class QuickChangeController<T> extends ChangeNotifier implements ValueListenable<QuickState> {
   QuickState _state = QuickInitial();
   QuickState get state => _state;
 

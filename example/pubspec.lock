@@ -139,7 +139,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.9.0"
-  quick_state:
+  quick_change:
     dependency: "direct main"
     description:
       path: ".."

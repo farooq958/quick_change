@@ -1,5 +1,5 @@
 
-# quick_state 🧩
+# quick_change 🧩
 
 > **A lightweight, intuitive state management solution for Flutter.**  
 > Effortlessly manage state transitions with simple, type-safe states and powerful listening and building capabilities.
@@ -40,11 +40,11 @@
 
 ## Installation
 
-Add `quick_state` to your `pubspec.yaml`:
+Add `quick_change` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  quick_state: ^1.0.0
+  quick_change: ^1.0.0
 ```
 
 Then run:
@@ -57,8 +57,8 @@ flutter pub get
 
 ## Quick Start 🚀
 
-1. **Define a `QuickStateController`** to manage your state.
-2. **Use `QuickStateBuilder`** to listen to state changes and update the UI.
+1. **Define a `QuickChangeController`** to manage your state.
+2. **Use `QuickChangeBuilder`** to listen to state changes and update the UI.
 3. **Use `.quickListen`** to respond to state changes outside of rebuilds.
 
 ---
@@ -84,7 +84,7 @@ Here’s how to create a simple counter using `quick_state`.
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:quick_state/quick_state.dart';
+import 'package:quick_change/quick_change.dart';
 
 class CounterScreen extends StatefulWidget {
   @override
@@ -92,7 +92,7 @@ class CounterScreen extends StatefulWidget {
 }
 
 class _CounterScreenState extends State<CounterScreen> {
-  final QuickStateController<int> counterController = QuickStateController<int>();
+  final QuickChangeController<int> counterController = QuickChangeController<int>();
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +101,7 @@ class _CounterScreenState extends State<CounterScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          QuickStateBuilder<int>(
+          QuickChangeBuilder<int>(
             controller: counterController,
             onInitial: (context) => Text("Welcome! Tap the button to start."),
             onLoading: (context) => CircularProgressIndicator(),

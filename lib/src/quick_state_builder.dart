@@ -5,15 +5,15 @@ import 'quick_state_controller.dart';
 ///
 
 /// Builder for QuickState widget to display loading, data, and error states.
-class QuickStateBuilder<T> extends StatelessWidget {
-  final QuickStateController<T> controller;
+class QuickChangeBuilder<T> extends StatelessWidget {
+  final QuickChangeController<T> controller;
   final Widget Function(BuildContext context)? onInitial;
 
   final Widget Function(BuildContext context)? onLoading;
   final Widget Function(BuildContext context, T data)? onData;
   final Widget Function(BuildContext context, String message)? onError;
 
-  const QuickStateBuilder({super.key,
+  const QuickChangeBuilder({super.key,
     required this.controller,
     this.onLoading,
     this.onInitial,
