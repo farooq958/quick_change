@@ -3,12 +3,12 @@ import 'package:flutter/foundation.dart';
 abstract class QuickState {}
 
 class QuickInitial extends QuickState {}
-
+///loading class
 class QuickLoading<T> extends QuickState {
-  final T? previousData;  // Optional data to carry over from previous state
+  final T? previousData;
   QuickLoading({this.previousData});
 }
-
+///success class
 class QuickData<T> extends QuickState {
   final T data;
   QuickData(this.data);
@@ -16,7 +16,7 @@ class QuickData<T> extends QuickState {
 
 class QuickError<T> extends QuickState {
   final String message;
-  final T? previousData;  // Optional data to carry over from previous state
+  final T? previousData;
   QuickError(this.message, {this.previousData});
 }
 
@@ -24,37 +24,37 @@ class QuickChangeController<T> extends ChangeNotifier implements ValueListenable
   QuickState _state = QuickInitial();
   QuickState get state => _state;
 
+  T? _currentData; // Holds the most recent data
+  T? get currentData => _currentData; // Public getter for currentData
+
   @override
   QuickState get value => _state;
+///
+/// Adds the state and notify listeners
+  void quickFlux(QuickState newState) {
+    // Update _currentData if the new state contains data
+    if (newState is QuickData<T>) {
+      _currentData = newState.data;
+    }
+    _state = newState;
+    notifyListeners();
+  }
 
   void setInitial() {
-    _state = QuickInitial();
-    notifyListeners();
+    quickFlux(QuickInitial());
   }
 
   void setLoading() {
-    _state = QuickLoading<T>(previousData: (state is QuickData<T>) ? (state as QuickData<T>).data : null);
-    notifyListeners();
+    quickFlux(QuickLoading<T>(previousData: _currentData));
   }
-
+///sets data and notify listeners [success state]
   void setData(T data) {
-    _state = QuickData<T>(data);
-    notifyListeners();
+    _currentData = data; // Update current data
+    quickFlux(QuickData<T>(data));
   }
 
   void setError(String message) {
-    _state = QuickError<T>(message, previousData: (state is QuickData<T>) ? (state as QuickData<T>).data : null);
-    notifyListeners();
+    quickFlux(QuickError<T>(message, previousData: _currentData));
   }
 
-  T? getCurrentData() {
-    if (_state is QuickData<T>) {
-      return (_state as QuickData<T>).data;
-    } else if (_state is QuickLoading<T>) {
-      return (_state as QuickLoading<T>).previousData;
-    } else if (_state is QuickError<T>) {
-      return (_state as QuickError<T>).previousData;
-    }
-    return null;
-  }
 }

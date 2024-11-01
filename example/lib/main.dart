@@ -1,3 +1,6 @@
+import 'package:example/api_check/screens/post_screen.dart';
+import 'package:example/controller.dart';
+import 'package:example/second_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:quick_change/quick_change.dart';
 
@@ -24,7 +27,7 @@ class CounterScreen extends StatefulWidget {
 }
 
 class CounterScreenState extends State<CounterScreen> {
-  final QuickChangeController<int> counterController = QuickChangeController<int>();
+
 
 
   @override
@@ -43,29 +46,40 @@ class CounterScreenState extends State<CounterScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             QuickChangeBuilder<int>(
-              controller: counterController,
+              controller: AppController.counterController,
               onLoading: (context) => const CircularProgressIndicator(),
               onData: (context, data) => Text('Counter: $data', style: const TextStyle(fontSize: 24)),
               onError: (context, message) => Text('Error: $message'),
             ),
             ElevatedButton(
               onPressed: () {
-                final currentValue = counterController.getCurrentData() ?? 0;
-                counterController.setData(currentValue + 1);
+                final currentValue = AppController.counterController.currentData ?? 0;
+                AppController.counterController.setData(currentValue + 1);
                ///test with loading
-                //counterController.setLoading();
+                //AppController.counterController.setLoading();
                //  Future.delayed(const Duration(seconds: 1), () {
-               //    final currentValue = counterController.getCurrentData() ?? 0;
-               //    counterController.setData(currentValue + 1);
+               //    final currentValue = AppController.counterController.getCurrentData() ?? 0;
+               //    AppController.counterController.setData(currentValue + 1);
                //  });
               },
               child: const Text('Increment Counter'),
             ),
+
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) =>  PostsScreen()));
+              },
+              child: const Text('Api Page'),
+            ),
+            Text(AppController.counterController.currentData.toString()),
           ],
         ).quickListen<int>(
-          controller: counterController,
+          controller: AppController.counterController,
           listener: (context, state) {
             if (state is QuickData) {
+              if(state.data % 3 == 0){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const SecondScreen()));
+              }
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text('Counter: ${state.data}')),
               );
