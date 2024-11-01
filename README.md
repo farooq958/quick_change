@@ -165,6 +165,7 @@ counterController.setSuccess(String message) {
   _state = QuickSuccess(message);
   notifyListeners();
 }
+and add it by using quickFlux() 
 ```
 
 ### Middleware and Logging
@@ -197,4 +198,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ---
 
-Happy coding! 😊🎉 With `quick_state & Farooq `, managing Flutter state transitions has never been simpler.
+Happy coding! 😊🎉 With `quick_change & Farooq `, managing Flutter state transitions has never been simpler.
