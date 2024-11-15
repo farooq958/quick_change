@@ -16,13 +16,14 @@ class PostsController extends QuickChangeController<List<Post>> {
 
     try {
       List<Post> posts = await _apiService.fetchPosts();
+      //print(posts.hashCode);
       setData(posts); // Set data state with the fetched posts
     } catch (error) {
       setError("Failed to fetch posts: ${error.toString()}"); // Set error state
     }
     finally {
 
-      quickFlux(SuccessState("This is custom state "));
+    //  quickFlux(SuccessState("This is custom state "));
 
     } }
 }

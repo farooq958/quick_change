@@ -81,49 +81,137 @@ flutter pub get
 ### Basic Counter Example
 
 Here’s how to create a simple counter using `quick_state`.
+```dart
+import 'package:quick_change/quick_change.dart';
 
+class  CounterController extends QuickChangeController<int> {
+
+
+
+  
+   incrementCounter(int cVal) {
+     print(cVal);
+int val = cVal+1;
+
+     setData(val);
+
+
+
+   }
+   decrementCounter(int cVal) {
+     int val = cVal-1;
+    
+
+     setData(val);
+
+
+
+   }
+
+
+
+
+
+}
+```
 ```dart
 import 'package:flutter/material.dart';
 import 'package:quick_change/quick_change.dart';
 
-class CounterScreen extends StatefulWidget {
-  @override
-  _CounterScreenState createState() => _CounterScreenState();
+void main() {
+  GetIt.I.registerLazySingleton<CounterController>(() => CounterController());
+  runApp(const MyApp());
 }
 
-class _CounterScreenState extends State<CounterScreen> {
-  final QuickChangeController<int> counterController = QuickChangeController<int>();
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
+    return const MaterialApp(
+      home: CounterScreen(),
+    );
+  }
+}
+
+class CounterScreen extends StatefulWidget {
+  const CounterScreen({super.key});
+
+  @override
+  CounterScreenState createState() => CounterScreenState();
+}
+
+class CounterScreenState extends State<CounterScreen> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  CounterController counterController = GetIt.I<CounterController>();
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Counter Example")),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          QuickChangeBuilder<int>(
-            controller: counterController,
-            onInitial: (context) => Text("Welcome! Tap the button to start."),
-            onLoading: (context) => CircularProgressIndicator(),
-            onData: (context, data) => Text("Counter: $data", style: TextStyle(fontSize: 24)),
-            onError: (context, message) => Text("Error: $message"),
-          ),
-          SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              counterController.setLoading();
-              Future.delayed(Duration(seconds: 1), () {
-                final currentValue = counterController.getCurrentData() ?? 0;
-                counterController.setData(currentValue + 1);
-              });
-            },
-            child: Text("Increment Counter"),
-          ),
-        ],
+      appBar: AppBar(
+        title: const Text('Quick_State Example'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            QuickChangeBuilder<int>(
+              controller: counterController,
+              onLoading: (context) => const CircularProgressIndicator(),
+              onData: (context, data) =>
+                      Text('Counter: $data', style: const TextStyle(fontSize: 24)),
+              onError: (context, message) => Text('Error: $message'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                final currentValue = counterController.currentData ?? 0;
+                counterController.incrementCounter(currentValue);
+              },
+              child: const Text('Increment Counter'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                final currentValue = counterController.currentData ?? 0;
+                counterController.decrementCounter(currentValue);
+              },
+              child: const Text('Decrement Counter'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => PostsScreen()));
+              },
+              child: const Text('Api Page'),
+            ),
+            // Text(counterController.currentData.toString()),
+          ],
+        ).quickListen<int>(
+          controller: counterController,
+          listener: (context, state) {
+            if (state is QuickData) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Counter: ${state.data}'),
+                  duration: const Duration(milliseconds: 400),
+                ),
+              );
+            }
+            if (state is QuickError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.message)),
+              );
+            }
+          },
+        ),
       ),
     );
   }
 }
+
 ```
 
 ### Listening for Errors
@@ -156,32 +244,12 @@ You can use `.quickListen` to display a Custom message such as `SnackBar` when a
 Define custom states by extending `QuickState`.
 
 ```dart
-class QuickSuccess extends QuickState {
+class QuickCustomSuccess extends QuickState {
   final String message;
-  QuickSuccess(this.message);
+  QuickCustomSuccess(this.message);
 }
-
-counterController.setSuccess(String message) {
-  _state = QuickSuccess(message);
-  notifyListeners();
-}
-and add it by using quickFlux() 
-```
-
-### Middleware and Logging
-
-Add logging to track state changes.
-
-```dart
-void quickListenWithLogging<T>({
-  required QuickStateController<T> controller,
-  required void Function(QuickState state) listener,
-}) {
-  controller.addListener(() {
-    print("State changed to: ${controller.state}");
-    listener(controller.state);
-  });
-}
+Just use this in your controller for fluxing or emmiting a custom state 
+quickFlux(QuickCustomSuccess("This is custom state "));
 ```
 
 ---

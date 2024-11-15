@@ -8,3 +8,6 @@
 
 ## 1.0.2
 ### Updated the Example for api hitting sample, added custom state function and updated the example code to use it. QuickFlux for adding custom statte
+
+## 1.0.3
+### Updated the Example for simple counter example and  api hitting sample, added custom state function and updated the example code to use it.

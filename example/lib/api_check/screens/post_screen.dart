@@ -6,6 +6,8 @@ import 'package:quick_change/quick_change.dart';
 
 
 class PostsScreen extends StatefulWidget {
+  const PostsScreen({super.key});
+
   @override
   _PostsScreenState createState() => _PostsScreenState();
 }
@@ -24,27 +26,20 @@ class _PostsScreenState extends State<PostsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Posts")),
-      body: QuickChangeBuilder<List<Post>>(
-        controller: _controller,
-        onInitial: (context) => Center(child: Text("Welcome!")),
-        onLoading: (context) => Center(child: CircularProgressIndicator()),
-        onData: (context, posts) => ListView.builder(
-          itemCount: posts.length,
-          itemBuilder: (context, index) {
-            final post = posts[index];
-            return ListTile(
-              title: Text(post.title),
-              subtitle: Text(post.body),
-            );
-          },
-        ),
-        onCustom: (context, state) {
-          if(state is SuccessState )
-            {
-              final posts=_controller.currentData;
+      body: RefreshIndicator(
+        onRefresh: () async{
 
-          return ListView.builder(
-            itemCount: posts!.length,
+          _controller.fetchPosts();
+        },
+        child: QuickChangeBuilder<List<Post>>(
+          controller: _controller,
+          onInitial: (context) => const Center(child: Text("Welcome!")),
+          onLoading: (context) => const Center(child: CircularProgressIndicator()),
+          onData: (context, posts) {
+
+            print("generated again");
+            return ListView.builder(
+            itemCount: posts.length,
             itemBuilder: (context, index) {
               final post = posts[index];
               return ListTile(
@@ -53,11 +48,32 @@ class _PostsScreenState extends State<PostsScreen> {
               );
             },
           );
-            }
-          return const  SizedBox();
+            },
+          onCustom: (context, state) {
+            if(state is SuccessState )
+              {
+                final posts=_controller.currentData;
 
-        },
-        onError: (context, message) => Center(child: Text(message)),
+            return ListView.builder(
+              itemCount: posts!.length,
+              itemBuilder: (context, index) {
+                final post = posts[index];
+                return ListTile(
+                  title: Text(post.title),
+                  subtitle: Text(post.body),
+                );
+              },
+            );
+              }
+            return const  SizedBox();
+
+          },
+          onError: (context, message) => Center(child: Text(message)),
+        ).quickListen(controller: _controller, listener: (context,state){
+
+          print(state);
+
+        }),
       ),
     );
   }

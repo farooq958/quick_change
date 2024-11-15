@@ -48,9 +48,18 @@ class QuickChangeController<T> extends ChangeNotifier implements ValueListenable
     quickFlux(QuickLoading<T>(previousData: _currentData));
   }
 ///sets data and notify listeners [success state]
+  int? _lastHashCode; // Store the last hash code if equality check isn't reliable
+
   void setData(T data) {
-    _currentData = data; // Update current data
-    quickFlux(QuickData<T>(data));
+    // Check if the new data is equal to the current data
+    if (_currentData.hashCode != data.hashCode) {
+      // If equality check fails, fall back to hash code comparison
+      if (data.hashCode != _lastHashCode) {
+        _lastHashCode = data.hashCode; // Update the hash code for the new data
+        _currentData = data; // Update current data
+        quickFlux(QuickData<T>(data)); // Notify listeners of the new state
+      }
+    }
   }
 
   void setError(String message) {

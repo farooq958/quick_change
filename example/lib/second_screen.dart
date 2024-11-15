@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 import 'controller.dart';
 
@@ -10,6 +11,7 @@ class SecondScreen extends StatefulWidget {
 }
 
 class _SecondScreenState extends State<SecondScreen> {
+  final counterController = GetIt.I.get<CounterController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +22,7 @@ class _SecondScreenState extends State<SecondScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-             Text('Second Screen ${AppController.counterController.currentData}'),
+             Text('Second Screen ${counterController.currentData}'),
             ElevatedButton(
               onPressed: () {
                 Navigator.pop(context);
